@@ -1,0 +1,129 @@
+---
+title: "Exercises"
+author: "Jimmy Zhang"
+date: "2022-10-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Vectorization
+
+1. Suppose we have a large-scale survey dataset with 50,000 respondents, who self-reported whether they voted in a recent election and their age.
+
+```{r}
+n <- 100000
+set.seed(123)
+d <- data.frame(
+  id = 1:n,
+  turnout = sample(c("voted", "did not vote"), 
+                   size = n, replace=TRUE),
+  age = sample(18:100, size=n, replace=TRUE)
+)
+```
+
+## 1. Count how many respondents voted:
+
+Here I have an example code to achieve this task using `for loop`:
+
+```{r}
+
+func1 <- function(){
+  
+  count <- 0
+  
+  for (i in 1:nrow(d)){
+    if (d$turnout[i]=="voted"){
+      count <- count + 1
+    }
+  }
+  return(count)
+}
+
+system.time(count <- func1())
+
+```
+
+How can we improve this function and make it faster?
+
+```{r}
+func2 <- function(){
+
+}
+
+system.time(count <- func2())
+```
+
+## 2. Compute the average age of respondents who voted:
+
+```{r}
+func1 <- function(){
+  voters_age <- c()
+  for (i in 1:nrow(d)){
+    if (d$turnout[i]=="voted"){
+      voters_age <- c(voters_age, d$age[i])
+    }
+  }
+  return(mean(voters_age))
+}
+system.time(count <- func1())
+```
+
+Your solution:
+
+```{r}
+func2 <- function(){
+
+}
+system.time(func2())
+```
+
+## 3. Take a random sample of 200 rows in the dataset that correspond to respondents who did not vote
+
+```{r}
+func1 <- function(){
+  
+  # sample random uniform number
+  d$random <- runif(nrow(d))
+  # sort by this random number
+  dd <- d[order(d$random),]
+  # loop over rows using 'while'
+  smp <- data.frame()
+  i <- 1
+  while (nrow(smp)<200){
+    if (d$turnout[i]=="did not vote"){
+      smp <- rbind(smp, d[i,])
+    }
+    i <- i + 1
+  }
+  return(smp)
+
+}
+
+system.time(smp <- func1())
+
+```
+
+Your solution here:
+
+```{r}
+func2 <- function(){
+
+}
+system.time(func2())
+```
+
+# Algorithm Complexity
+
+Write a function that returns all prime numbers from 2 until an arbitrary number *n*. 
+
+A couple of clues to get you started: (1) remember that a prime number can only be divided by 1 and itself; (2) in R, you can compute the modulo (aka remainder) of a number divided by another as `10 %% 5` -- this will return 0 because when you divide 10 by 5 there is no remainder. In contrast, `11 %% 5` will return 1.
+
+Can you write a solution that takes less than 1 second to identify all prime numbers for n=10,000?
+
+
+
+
+
